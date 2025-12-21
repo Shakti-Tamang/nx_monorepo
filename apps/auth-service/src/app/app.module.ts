@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
-import { AppService } from './app.service';
+import { AuthorizationService } from './app.service';
 import { join } from 'node:path';
 import { ServeStaticModule } from '@nestjs/serve-static';
 import { ScheduleModule } from '@nestjs/schedule';
@@ -33,6 +33,6 @@ TypeOrmModule.forRootAsync({
       serveRoot: '/public',
     }),],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [AuthorizationService],
 })
 export class AppModule {}
