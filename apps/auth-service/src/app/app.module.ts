@@ -8,9 +8,11 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule, TypeOrmModuleOptions } from '@nestjs/typeorm';
 import ormConfigProd from './config/orm.config.prod';
 import ormConfig from './config/orm.config';
+import { user } from './entity/user.entity';
+import { Role } from './entity/role.entity';
+import { Authorization } from './entity/auth.entity';
 @Module({
    imports: [
-    ScheduleModule.forRoot(),
     ConfigModule.forRoot({
       envFilePath: '.env', 
       isGlobal: true,
@@ -24,6 +26,8 @@ TypeOrmModule.forRootAsync({
     return configService.getOrThrow<TypeOrmModuleOptions>('orm.config');
   },
 }),
+
+ TypeOrmModule.forFeature([user, Role, Authorization]),
     ServeStaticModule.forRoot({
       rootPath: join(__dirname, '..', 'public'),
       serveRoot: '/public',

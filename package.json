@@ -2,7 +2,9 @@
   "name": "@mymicroservices/source",
   "version": "0.0.0",
   "license": "MIT",
-  "scripts": {},
+  "scripts": {
+     "create-routes": "ts-node apps/auth-service/src/app/scripts/create-routes.ts"
+  },
   "private": true,
   "devDependencies": {
     "@eslint/js": "^9.39.2",
@@ -53,19 +55,19 @@
     "@nestjs/typeorm": "^11.0.0",
     "amqp-connection-manager": "^5.0.0",
     "amqplib": "^0.10.9",
-    "axios": "^1.6.0",
+    "axios": "^1.13.2",
     "class-transformer": "^0.5.1",
     "class-validator": "^0.14.3",
     "consul": "^2.0.1",
     "cross-env": "^10.1.0",
     "dotenv": "^17.2.3",
-    "mongoose": "^9.0.1",
+    "mongoose": "^9.0.2",
     "pg": "^8.16.3",
     "reflect-metadata": "^0.2.2",
     "rxjs": "^7.8.2",
     "swagger-ui-express": "^5.0.1",
     "typeorm": "^0.3.28",
-    "@nestjs/schedule": "^5.0.1",
-    "@nestjs/serve-static": "^5.0.2"
+    "@nestjs/schedule": "^6.1.0",
+    "@nestjs/serve-static": "^5.0.4"
   }
 }
