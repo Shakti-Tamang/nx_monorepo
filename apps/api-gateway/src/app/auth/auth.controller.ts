@@ -2,6 +2,7 @@ import { Body, Controller, Post } from '@nestjs/common';
 import { CreateUserDto } from '../dto/create-user.dto';
 import { AppService } from '../app.service';
 import { ApiTags } from '@nestjs/swagger';
+import { SigninDTO } from '../dto/signup.entity';
 
 @Controller('auth')
 @ApiTags('auth')
@@ -13,7 +14,7 @@ export class AuthController {
     return await this.appServices.saveUser(dto);
   }
   @Post('/login')
-  async loginUser(@Body() body: { username: string; password: string }) {
-    return 'logged in user';
+  async loginUser(@Body() dto: SigninDTO) {
+    return await this.appServices.loginUsers(dto);
   }
 }
