@@ -19,6 +19,8 @@ async function bootstrap() {
       urls: [RABBITMQ_URL],
       queue: 'auth_queue',
       queueOptions: { durable: true },
+        noAck: false, // ensure messages are acknowledged
+      prefetchCount: 10, // process multiple messages in parallel
     },
   });
 
