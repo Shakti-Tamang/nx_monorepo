@@ -49,7 +49,7 @@ export class user {
 
 
   @Column({ type: 'bigint', nullable: true })
-  contactNumber!: number;
+contactNumber!: string;
 
   @CreateDateColumn()
   createdAt!: Date;
