@@ -1,6 +1,5 @@
 import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
-import { AuthorizationService } from './app.service';
 import { join } from 'node:path';
 import { ServeStaticModule } from '@nestjs/serve-static';
 import { ScheduleModule } from '@nestjs/schedule';
@@ -11,6 +10,10 @@ import ormConfig from './config/orm.config';
 import { user } from './entity/user.entity';
 import { Role } from './entity/role.entity';
 import { Authorization } from './entity/auth.entity';
+import type ms from 'ms';
+import { AuthorizationService } from './guards/authorization.service';
+import { JwtModule } from '@nestjs/jwt';
+import { AppService } from './app.service';
 @Module({
    imports: [
     ConfigModule.forRoot({
@@ -31,8 +34,21 @@ TypeOrmModule.forRootAsync({
     ServeStaticModule.forRoot({
       rootPath: join(__dirname, '..', 'public'),
       serveRoot: '/public',
-    }),],
+    }),
+  JwtModule.registerAsync({
+  imports: [ConfigModule],
+  inject: [ConfigService],
+  useFactory: (configService: ConfigService) => ({
+    secret: configService.getOrThrow<string>('JWT_SECRET'),
+    signOptions: {
+      expiresIn: configService.getOrThrow<string>('ACCESS_TOKEN_EXPIRY') as import('ms').StringValue,
+    },
+  }),
+}),
+
+  
+  ],
   controllers: [AppController],
-  providers: [AuthorizationService],
+  providers: [AuthorizationService,AppService],
 })
 export class AppModule {}
