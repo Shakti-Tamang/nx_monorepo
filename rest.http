@@ -1,0 +1,8 @@
+POST http://localhost:3001/auth
+Content-Type: application/json
+
+ {
+    "lan":62353,
+    "lat":123,
+    "ride":"shakti"
+ }
