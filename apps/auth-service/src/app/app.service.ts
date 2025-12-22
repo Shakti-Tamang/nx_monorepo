@@ -71,13 +71,9 @@ generateRefreshToken(payload: JwtPayload): string {
    */
 
   async signUp(
-    signUpRequest: CreateUserDto,
-    organizationId: string,
+    signUpRequest: CreateUserDto
   ): Promise<{ message: string; userId?: string }> {
-    if (!organizationId) {
-      throw new BadRequestException('Organization header is required');
-    }
-
+  
     const existingUser = await this.userRepository.findOne({
       where: { email: signUpRequest.email },
     });
