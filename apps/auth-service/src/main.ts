@@ -8,7 +8,7 @@ import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app/app.module';
 import { MicroserviceOptions, Transport } from '@nestjs/microservices';
 async function bootstrap() {
-    const app = await NestFactory.create(AppModule);
+  const app = await NestFactory.create(AppModule);
   const RABBITMQ_URL = 'amqp://guest:guest@localhost:5672';
   app.enableCors();
   await app.listen(3009);
@@ -19,15 +19,21 @@ async function bootstrap() {
       urls: [RABBITMQ_URL],
       queue: 'auth_queue',
       queueOptions: { durable: true },
-        noAck: false, // ensure messages are acknowledged
+      noAck: false, // ensure messages are acknowledged( ensure messages are acknowledged)
       prefetchCount: 10, // process multiple messages in parallel
     },
   });
 
+  //   Set noAck: false (manual ack)
+
+  // Ack after successful DB insert
+
+  // If DB fails → message goes back to queue → retry
+
+  // Consider Dead Letter Queue for failed messages
+
   await microservice.listen();
-  Logger.log(
-    `🚀 Application is running on: http://localhost:`,
-  );
+  Logger.log(`🚀 Application is running on: http://localhost:`);
 }
 
 bootstrap();

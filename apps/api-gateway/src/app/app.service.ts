@@ -15,6 +15,11 @@ export class AppService {
   // }
 
   async saveUser(dto: CreateUserDto) {
+    //     emit() is fire-and-forget → no response, faster but unreliable if you need confirmation.
+
+    // send() is request-response → waits for the microservice reply.
+
+    // For user signup/login, use send() (RPC style) so API gateway knows if the operation succeeded.
     const result = await this.auth_client
       .send('auth-user-signup', dto)
       .toPromise();
