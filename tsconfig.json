@@ -26,6 +26,12 @@
     },
     {
       "path": "./apps/auth-service"
+    },
+    {
+      "path": "./apps/websocket-e2e"
+    },
+    {
+      "path": "./apps/websocket"
     }
   ]
 }
