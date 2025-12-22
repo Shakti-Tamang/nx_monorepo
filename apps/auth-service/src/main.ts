@@ -11,7 +11,7 @@ async function bootstrap() {
     const app = await NestFactory.create(AppModule);
   const RABBITMQ_URL = 'amqp://guest:guest@localhost:5672';
   app.enableCors();
-  await app.listen(3007);
+  await app.listen(3009);
 
   const microservice = app.connectMicroservice<MicroserviceOptions>({
     transport: Transport.RMQ,
