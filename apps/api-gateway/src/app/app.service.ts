@@ -3,6 +3,7 @@ import { AUTH_SERVICE_RABBITMQ } from './utils/servicename';
 import { ClientProxy } from '@nestjs/microservices';
 import { CreateUserDto } from './dto/create-user.dto';
 import { lastValueFrom } from 'rxjs';
+import { SigninDTO } from './dto/signup.entity';
 
 @Injectable()
 export class AppService {
@@ -20,5 +21,11 @@ export class AppService {
       this.auth_client.send('auth-user-signup', dto),
     );
 
+  }
+
+  async loginUsers(dto:SigninDTO){
+       return await lastValueFrom(
+      this.auth_client.send('auth-user-login', dto),
+    );
   }
 }
