@@ -12,7 +12,7 @@ export class LocationGateway {
   private readonly logger = new Logger(LocationGateway.name);
 
   // Handle a client connecting
-  afterInit(server: any) {
+  afterInit(server: any){
     this.logger.log('WebSocket Gateway Initialized');
   }
 
