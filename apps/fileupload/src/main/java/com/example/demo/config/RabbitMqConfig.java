@@ -11,10 +11,11 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class RabbitMqConfig {
 
-      public static final String QUEUE_NAME = "myQueue";
-    public static final String EXCHANGE_NAME = "myExchange";
+    public static final String QUEUE_NAME = "File_Que";
+    public static final String EXCHANGE_NAME = "upload_Exchange";
+        public static final String ROUTING_KEY = "routing.key";
 
-    @Bean
+     @Bean
     public Queue queue() {
         return new Queue(QUEUE_NAME, false);
     }
@@ -26,7 +27,10 @@ public class RabbitMqConfig {
 
     @Bean
     public Binding binding(Queue queue, TopicExchange exchange) {
-        return BindingBuilder.bind(queue).to(exchange).with("routing.key.#");
+        return BindingBuilder
+                .bind(queue)
+                .to(exchange)
+                .with(ROUTING_KEY);
     }
 
 }
