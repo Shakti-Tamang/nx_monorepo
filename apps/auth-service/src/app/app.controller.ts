@@ -13,15 +13,26 @@ export class AppController {
   //   return this.appService.getData();
   // }
 
-
-    @MessagePattern('auth-user-signup')
+  @MessagePattern('auth-user-signup')
   async saveAuth(@Payload() credentials: CreateUserDto) {
-
-    console.log("datas",credentials)
+    console.log('datas', credentials);
     return await this.appService.signUp(credentials);
   }
   @MessagePattern('auth-user-login')
   async loginAuth(@Payload() credentials: SigninDTO) {
-    return await this.appService.login(credentials);
+    const startTime = Date.now();
+    try {
+      const result = await this.appService.login(credentials);
+      const duration = Date.now() - startTime;
+
+      // Log to monitoring system
+      console.log(`Login processed in ${duration}ms`);
+
+      return result;
+    } catch (error) {
+      const duration = Date.now() - startTime;
+      console.error(`Login failed after ${duration}ms:`, error);
+      throw error;
+    }
   }
 }

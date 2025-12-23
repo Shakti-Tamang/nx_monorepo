@@ -1,4 +1,4 @@
-package com.example.producer;
+package com.example.demo.producer;
 
 import org.jvnet.hk2.annotations.Service;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;

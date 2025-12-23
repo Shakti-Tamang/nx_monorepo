@@ -13,17 +13,25 @@ async function bootstrap() {
   app.enableCors();
   await app.listen(3009);
 
-  const microservice = app.connectMicroservice<MicroserviceOptions>({
-    transport: Transport.RMQ,
-    options: {
-      urls: [RABBITMQ_URL],
-      queue: 'auth_queue',
-      queueOptions: { durable: true },
-      noAck: false, // ensure messages are acknowledged( ensure messages are acknowledged)
-      prefetchCount: 10, // process multiple messages in parallel
-    },
-  });
 
+  // Dead Letter Exchange (DLX)
+// In your microservice options:
+const microservice = app.connectMicroservice<MicroserviceOptions>({
+  transport: Transport.RMQ,
+  options: {
+    urls: [RABBITMQ_URL],
+    queue: 'auth_queue',
+    queueOptions: { 
+      durable: true,
+      arguments: {
+        'x-dead-letter-exchange': 'dlx.auth',  // Failed messages go here
+        'x-dead-letter-routing-key': 'failed.auth'
+      }
+    },
+    noAck: false,
+    prefetchCount: 10,
+  },
+});
   //   Set noAck: false (manual ack)
 
   // Ack after successful DB insert
