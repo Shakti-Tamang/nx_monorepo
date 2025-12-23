@@ -29,22 +29,22 @@ import {
         },
       },
     ]),
-ClientsModule.register([
-  {
-    name: UPLOAD_SERVICE_RABBITMQ,
-    transport: Transport.RMQ,
-    options: {
-      urls: ['amqp://guest:guest@localhost:5672'],
-      queue: 'File_Que',
-      // Add exchange configuration to match Spring Boot
-      exchange: 'upload_Exchange',
-      routingKey: 'routing.key', // Must match Spring Boot's ROUTING_KEY
-      queueOptions: {
-        durable: true,
+    ClientsModule.register([
+      {
+        name: UPLOAD_SERVICE_RABBITMQ,
+        transport: Transport.RMQ,
+        options: {
+          urls: ['amqp://guest:guest@localhost:5672'],
+          queue: 'File_Que',
+          // Add exchange configuration to match Spring Boot
+          exchange: 'upload_Exchange',
+          routingKey: 'routing.key', // Must match Spring Boot's ROUTING_KEY
+          queueOptions: {
+            durable: true,
+          },
+        },
       },
-    },
-  },
-])
+    ]),
   ],
   controllers: [AppController, AuthController, AuthController],
   providers: [AppService],
