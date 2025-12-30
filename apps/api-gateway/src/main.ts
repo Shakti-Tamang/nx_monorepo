@@ -62,4 +62,6 @@ async function bootstrap() {
 
 // npx create-nx-workspace@latest projectname
 
+//  npm install -g npm-check-updates
+
 bootstrap();
