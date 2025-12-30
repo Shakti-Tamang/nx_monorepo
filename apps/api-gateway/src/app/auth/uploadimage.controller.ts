@@ -27,7 +27,7 @@ type UploadedFileType = {
 @ApiTags('uploadimages')
 export class UploadImages {
   constructor(private readonly appServices: AppService) {}
-
+// upload image 
   @UseInterceptors(FileInterceptor('file'))
   @Post('/uploadFile')
   @ApiConsumes('multipart/form-data')
