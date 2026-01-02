@@ -40,6 +40,8 @@ const microservice = app.connectMicroservice<MicroserviceOptions>({
 
   // Consider Dead Letter Queue for failed messages
 
+  // nx run auth-service:seed
+
   await microservice.listen();
   Logger.log(`🚀 Application is running on: http://localhost:`);
 }

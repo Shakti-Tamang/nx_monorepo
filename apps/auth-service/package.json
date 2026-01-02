@@ -4,6 +4,12 @@
   "private": true,
   "nx": {
     "targets": {
+       "seed": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "ts-node apps/auth-service/src/app/scripts/create-routes.ts"
+      }
+    },
       "build": {
         "executor": "nx:run-commands",
         "options": {
