@@ -12,8 +12,7 @@ import { APP_GUARD } from '@nestjs/core';
 import { CustomThrottlerGuard } from './guard';
 
 import { configDotenv } from 'dotenv';
-configDotenv()
-
+configDotenv();
 
 @Module({
   imports: [
@@ -27,7 +26,13 @@ configDotenv()
         options: {
           urls: ['amqp://guest:guest@localhost:5672'],
           queue: 'auth_queue',
-          queueOptions: { durable: true },
+          queueOptions: {
+            durable: true,
+            arguments: {
+              'x-dead-letter-exchange': 'dlx.auth',
+              'x-dead-letter-routing-key': 'failed.auth',
+            },
+          },
           // Add these for production:
           socketOptions: {
             heartbeatIntervalInSeconds: 60,
