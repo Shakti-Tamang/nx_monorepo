@@ -64,4 +64,18 @@ async function bootstrap() {
 
 //  npm install -g npm-check-updates
 
+
+
+
+// command to create nx monorepo
+// npx create-turbo@latest my-monorepo
+
+// PS C:\Users\Shakti\Desktop\BCA\microservciesnest\uberservice> npm install -g npm-check-updates
+
+
+// nest generate app shakti-service
+
+
+//  docker run --name mongod mongo:latest
+
 bootstrap();
