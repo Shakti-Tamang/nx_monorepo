@@ -8,7 +8,9 @@ import { SkipThrottle } from '@nestjs/throttler';
 @Controller('auth')
 @ApiTags('auth')
 export class AuthController {
-  constructor(private readonly appServices: AppService) {}
+  constructor(private readonly appServices: AppService) {
+
+  }
 
   @Post()
   async saveAuthUser(@Body() dto: CreateUserDto) {

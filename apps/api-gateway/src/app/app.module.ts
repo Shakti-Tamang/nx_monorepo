@@ -11,6 +11,10 @@ import { ThrottlerModule } from '@nestjs/throttler';
 import { APP_GUARD } from '@nestjs/core';
 import { CustomThrottlerGuard } from './guard';
 
+import { configDotenv } from 'dotenv';
+configDotenv()
+
+
 @Module({
   imports: [
     // In ClientsModule configuration:
@@ -52,21 +56,21 @@ import { CustomThrottlerGuard } from './guard';
 
     ThrottlerModule.forRoot({
       throttlers: [
-        {
-          name: 'short',
-          ttl: 1000,
-          limit: parseInt(process.env.RATE_LIMIT_SHORT || '10'),
-        },
+        // {
+        //   name: 'short',
+        //   ttl: 1000,
+        //   limit: parseInt(process.env.RATE_LIMIT_SHORT || '10'),
+        // },
         {
           name: 'medium',
           ttl: 10000,
           limit: parseInt(process.env.RATE_LIMIT_MEDIUM || '50'),
         },
-        {
-          name: 'long',
-          ttl: 60000,
-          limit: parseInt(process.env.RATE_LIMIT_LONG || '100'),
-        },
+        // {
+        //   name: 'long',
+        //   ttl: 60000,
+        //   limit: parseInt(process.env.RATE_LIMIT_LONG || '100'),
+        // },
       ],
     }),
   ],
