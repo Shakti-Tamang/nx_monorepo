@@ -30,7 +30,7 @@ export class CustomThrottlerGuard extends ThrottlerGuard {
 
     // If skipThrottle is true, skip ALL throttling
     if (skipThrottle === true) {
-      console.log('✅ Skipping throttle for:', context.getHandler().name);
+      console.log('Skipping throttle for:', context.getHandler().name);
       return true;
     }
 
@@ -45,7 +45,7 @@ export class CustomThrottlerGuard extends ThrottlerGuard {
       );
       
       if (shouldSkipAll) {
-        console.log('✅ Skipping all named throttlers for:', context.getHandler().name);
+        console.log('Skipping all named throttlers for:', context.getHandler().name);
         return true;
       }
     }
