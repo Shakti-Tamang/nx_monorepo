@@ -67,6 +67,8 @@ export class UploadImages {
       type: type,
     };
 
+
+    await this.appServices.uploadImage(file, type);
     return {
       success: true,
       message: 'File uploaded successfully',
