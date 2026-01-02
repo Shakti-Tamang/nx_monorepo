@@ -3,6 +3,7 @@ import { CreateUserDto } from '../dto/create-user.dto';
 import { AppService } from '../app.service';
 import { ApiTags } from '@nestjs/swagger';
 import { SigninDTO } from '../dto/signup.entity';
+import { SkipThrottle } from '@nestjs/throttler';
 
 @Controller('auth')
 @ApiTags('auth')
@@ -19,6 +20,7 @@ export class AuthController {
   }
 
   @Get('/hello')
+ @SkipThrottle({ short: true, medium: true, long: true })
   getHello(): string {
     return 'Hello Auth Service';
   }
