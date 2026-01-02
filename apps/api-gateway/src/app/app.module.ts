@@ -50,7 +50,7 @@ import { CustomThrottlerGuard } from './guard';
       },
     ]),
 
-        ThrottlerModule.forRoot({
+    ThrottlerModule.forRoot({
       throttlers: [
         {
           name: 'short',
@@ -60,22 +60,23 @@ import { CustomThrottlerGuard } from './guard';
         {
           name: 'medium',
           ttl: 10000,
-          limit: parseInt(process.env.RATE_LIMIT_MEDIUM || '50')
+          limit: parseInt(process.env.RATE_LIMIT_MEDIUM || '50'),
         },
         {
           name: 'long',
           ttl: 60000,
-          limit: parseInt(process.env.RATE_LIMIT_LONG || '100')
+          limit: parseInt(process.env.RATE_LIMIT_LONG || '100'),
         },
       ],
     }),
   ],
-  controllers: [AppController, AuthController, AuthController],
-  providers: [AppService,
+  controllers: [AppController, AuthController],
+  providers: [
+    AppService,
     {
       provide: APP_GUARD,
-      useClass: CustomThrottlerGuard, 
-    }
+      useClass: CustomThrottlerGuard,
+    },
   ],
 
   exports: [],
