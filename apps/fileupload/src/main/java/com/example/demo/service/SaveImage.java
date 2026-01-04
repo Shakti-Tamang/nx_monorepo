@@ -4,6 +4,6 @@ import com.example.demo.model.Image;
 
 public interface SaveImage {
 
-    public void uploadImage(Image image);
+    public Image uploadImage(Image image, byte[] data, String filename, String mimetype);
 
 }

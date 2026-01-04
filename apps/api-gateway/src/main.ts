@@ -38,7 +38,7 @@ async function bootstrap() {
     `🚀 Application is running on: http://localhost:${port}/${globalPrefix}`,
   );
 }
-
+// nx reset
 // creating different services
 
 //  nx g @nx/nest:app apps/api-gateway   

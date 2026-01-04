@@ -12,6 +12,7 @@ import { APP_GUARD } from '@nestjs/core';
 import { CustomThrottlerGuard } from './guard';
 
 import { configDotenv } from 'dotenv';
+import { UploadImages } from './auth/uploadimage.controller';
 configDotenv();
 
 @Module({
@@ -42,19 +43,18 @@ configDotenv();
         },
       },
     ]),
-    ClientsModule.register([
+   ClientsModule.register([
       {
         name: UPLOAD_SERVICE_RABBITMQ,
         transport: Transport.RMQ,
         options: {
-          urls: ['amqp://guest:guest@localhost:5672'],
-          queue: 'File_Que',
+          urls: ['amqp://localhost:5672'],
+          queue: 'image.upload.queue',
+          queueOptions: { durable: true },
           // Add exchange configuration to match Spring Boot
           exchange: 'upload_Exchange',
-          routingKey: 'routing.key', // Must match Spring Boot's ROUTING_KEY
-          queueOptions: {
-            durable: true,
-          },
+          exchangeType: 'direct',
+          routingKey: 'routing.key',
         },
       },
     ]),
@@ -79,7 +79,7 @@ configDotenv();
       ],
     }),
   ],
-  controllers: [AppController, AuthController],
+  controllers: [AppController, AuthController,UploadImages],
   providers: [
     AppService,
     {
