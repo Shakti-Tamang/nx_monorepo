@@ -67,6 +67,13 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-amqp</artifactId>
         </dependency>
+        
+        <!-- CLOUDINARY -->
+        <dependency>
+            <groupId>com.cloudinary</groupId>
+            <artifactId>cloudinary-http44</artifactId>
+            <version>1.35.0</version>
+        </dependency>
 
         <!-- CONFIG CLIENT -->
         <dependency>

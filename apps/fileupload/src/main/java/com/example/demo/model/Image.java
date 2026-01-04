@@ -31,7 +31,7 @@ public class Image {
 
     String imageUrl;
 
-    Long publicId;
+    String publicId;
 
     @Enumerated(EnumType.STRING)
 
