@@ -13,6 +13,7 @@ import { APP_GUARD } from '@nestjs/core';
 import { CustomThrottlerGuard } from './guard';
 import { configDotenv } from 'dotenv';
 import { UploadImages } from './auth/uploadimage.controller';
+import { ProductController } from './auth/product';
 
 configDotenv();
 
@@ -36,16 +37,17 @@ configDotenv();
       },
       {
         name: PRODUCT_SERVICE_RABBITMQ,
-        transport: Transport.RMQ,
+          transport: Transport.RMQ,
         options: {
           urls: ['amqp://guest:guest@localhost:5672'],
           queue: 'product_queue',
-          queueOptions: { durable: true },
-          socketOptions: {
-            heartbeatIntervalInSeconds: 60,
-            reconnectTimeInSeconds: 5,
+          queueOptions: {
+            durable: true,
+            arguments: {
+              'x-dead-letter-exchange': 'dlx.product',
+              'x-dead-letter-routing-key': 'failed.product',
+            },
           },
-          maxConnectionAttempts: 10,
         },
       },
       {
@@ -74,7 +76,7 @@ configDotenv();
       ],
     }),
   ],
-  controllers: [AppController, AuthController, UploadImages],
+  controllers: [AppController, AuthController, UploadImages,ProductController],
   providers: [
     AppService,
     {

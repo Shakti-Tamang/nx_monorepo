@@ -1,28 +1,73 @@
-import { Column, CreateDateColumn, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
+import { ApiProperty } from '@nestjs/swagger';
+import {
+  IsArray,
+  IsBoolean,
+  IsNumber,
+  IsOptional,
+  IsString,
+} from 'class-validator';
 
-export class ProductDto{
+export class ProductDto {
 
+  @ApiProperty({
+    example: 1,
+    description: 'Product ID',
+    required: false,
+  })
+  @IsOptional()
+  @IsNumber()
+  id?: number;
 
-  id!: number;
-
-  @Column({ length: 150 })
+  @ApiProperty({
+    example: 'iPhone 15',
+    description: 'Product name',
+  })
+  @IsString()
   name!: string;
 
-  @Column('text')
+  @ApiProperty({
+    example: 'Latest Apple smartphone',
+    description: 'Product description',
+  })
+  @IsString()
   description!: string;
 
-  @Column('decimal', { precision: 10, scale: 2 })
+  @ApiProperty({
+    example: 1299.99,
+    description: 'Product price',
+  })
+  @IsNumber()
   price!: number;
 
-  @Column({ default: true })
+  @ApiProperty({
+    example: true,
+    description: 'Product active status',
+    default: true,
+  })
+  @IsBoolean()
   isActive!: boolean;
 
-  @Column('simple-array')
-    imageIds!: number[];
+  @ApiProperty({
+    example: [1, 2, 3],
+    description: 'List of uploaded image IDs',
+    type: [Number],
+  })
+  @IsArray()
+  imageIds!: number[];
 
-  @CreateDateColumn()
-  createdAt!: Date;
+  @ApiProperty({
+    example: '2025-01-01T10:00:00.000Z',
+    description: 'Created date',
+    required: false,
+  })
+  @IsOptional()
+  createdAt?: Date;
 
-  @UpdateDateColumn()
-  updatedAt!: Date;
+  @ApiProperty({
+    example: '2025-01-01T10:05:00.000Z',
+    description: 'Last updated date',
+    required: false,
+  })
+  @IsOptional()
+  updatedAt?: Date;
 }
