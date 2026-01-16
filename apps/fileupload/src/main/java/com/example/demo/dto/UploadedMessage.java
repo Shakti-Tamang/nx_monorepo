@@ -1,11 +1,14 @@
 package com.example.demo.dto;
 
-import com.example.demo.enums.ImageType;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.AllArgsConstructor;
 
 @Data
+@NoArgsConstructor
+@AllArgsConstructor
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class UploadedMessage {
     
@@ -13,7 +16,7 @@ public class UploadedMessage {
     private String filename;
     
     @JsonProperty("imageType")
-    private String imageType;  
+    private String imageType;
     
     @JsonProperty("mimetype")
     private String mimetype;
@@ -22,14 +25,5 @@ public class UploadedMessage {
     private Long size;
     
     @JsonProperty("data")
-    private String data; // Base64
-    
-    // Add getter for ImageType enum
-    public ImageType getImageTypeEnum() {
-        try {
-            return ImageType.valueOf(this.imageType.toUpperCase());
-        } catch (Exception e) {
-            return ImageType.PRODUCT;
-        }
-    }
+    private String data;
 }

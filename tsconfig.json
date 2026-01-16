@@ -32,6 +32,12 @@
     },
     {
       "path": "./apps/websocket"
+    },
+    {
+      "path": "./apps/product-e2e"
+    },
+    {
+      "path": "./apps/product"
     }
   ]
 }

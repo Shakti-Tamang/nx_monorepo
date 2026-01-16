@@ -4,6 +4,7 @@ import {
   Post,
   UploadedFile,
   UseInterceptors,
+  BadRequestException,
 } from '@nestjs/common';
 import { ApiBody, ApiConsumes, ApiTags } from '@nestjs/swagger';
 import { FileInterceptor } from '@nestjs/platform-express';
@@ -27,9 +28,11 @@ export class UploadImages {
         },
         type: {
           type: 'string',
-          example: 'PROFILE',
+          enum: Object.values(FileType),
+          example: 'PRODUCT',
         },
       },
+      required: ['file', 'type'],
     },
   })
   @UseInterceptors(FileInterceptor('file'))
@@ -37,6 +40,10 @@ export class UploadImages {
     @UploadedFile() file: Express.Multer.File,
     @Body('type') type: FileType,
   ) {
+    if (!file) {
+      throw new BadRequestException('No file uploaded');
+    }
+
     return this.appServices.uploadImage(file, type);
   }
 }

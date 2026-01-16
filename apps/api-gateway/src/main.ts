@@ -11,9 +11,6 @@ import { useContainer } from 'class-validator';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { ValidationPipe } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
-
-
-
 async function bootstrap() {
   const app = await NestFactory.create(ApiGatewayModule, { cors: true });
   app.enableCors();
@@ -77,5 +74,18 @@ async function bootstrap() {
 
 
 //  docker run --name mongod mongo:latest
+
+// # Generate a controller
+// nx g controller users --project=order
+
+// # Generate a service
+// nx g service users --project=order
+
+// # Generate a module
+// nx g module users --project=order
+
+// # Generate a resource (REST API)
+// nx g @nestjs/schematics:resource users --project=order
+
 
 bootstrap();

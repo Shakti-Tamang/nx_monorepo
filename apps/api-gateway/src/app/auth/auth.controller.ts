@@ -20,9 +20,8 @@ export class AuthController {
   async loginUser(@Body() dto: SigninDTO) {
     return await this.appServices.loginUsers(dto);
   }
-
   @Get('/hello')
- @SkipThrottle({ short: true, medium: true, long: true })
+//  @SkipThrottle({ short: true, medium: true, long: true })
   getHello(): string {
     return 'Hello Auth Service';
   }

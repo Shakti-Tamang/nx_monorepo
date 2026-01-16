@@ -5,23 +5,21 @@ import { AuthController } from './auth/auth.controller';
 import { ClientsModule, Transport } from '@nestjs/microservices';
 import {
   AUTH_SERVICE_RABBITMQ,
+  PRODUCT_SERVICE_RABBITMQ,
   UPLOAD_SERVICE_RABBITMQ,
 } from './utils/servicename';
 import { ThrottlerModule } from '@nestjs/throttler';
 import { APP_GUARD } from '@nestjs/core';
 import { CustomThrottlerGuard } from './guard';
-
 import { configDotenv } from 'dotenv';
 import { UploadImages } from './auth/uploadimage.controller';
+
 configDotenv();
 
 @Module({
   imports: [
-    // In ClientsModule configuration:
-
     ClientsModule.register([
-      {
-        // connection Retry Logic
+       {
         name: AUTH_SERVICE_RABBITMQ,
         transport: Transport.RMQ,
         options: {
@@ -34,52 +32,49 @@ configDotenv();
               'x-dead-letter-routing-key': 'failed.auth',
             },
           },
-          // Add these for production:
-          socketOptions: {
-            heartbeatIntervalInSeconds: 60,
-            reconnectTimeInSeconds: 5, // Auto-reconnect
-          },
-          maxConnectionAttempts: 5, // Retry 5 times
         },
       },
-    ]),
-   ClientsModule.register([
+      {
+        name: PRODUCT_SERVICE_RABBITMQ,
+        transport: Transport.RMQ,
+        options: {
+          urls: ['amqp://guest:guest@localhost:5672'],
+          queue: 'product_queue',
+          queueOptions: { durable: true },
+          socketOptions: {
+            heartbeatIntervalInSeconds: 60,
+            reconnectTimeInSeconds: 5,
+          },
+          maxConnectionAttempts: 10,
+        },
+      },
       {
         name: UPLOAD_SERVICE_RABBITMQ,
         transport: Transport.RMQ,
         options: {
-          urls: ['amqp://localhost:5672'],
+          urls: ['amqp://guest:guest@localhost:5672'],
           queue: 'image.upload.queue',
           queueOptions: { durable: true },
-          // Add exchange configuration to match Spring Boot
-          exchange: 'upload_Exchange',
-          exchangeType: 'direct',
-          routingKey: 'routing.key',
+          socketOptions: {
+            heartbeatIntervalInSeconds: 60,
+            reconnectTimeInSeconds: 5,
+          },
+          maxConnectionAttempts: 10,
         },
       },
     ]),
 
     ThrottlerModule.forRoot({
       throttlers: [
-        // {
-        //   name: 'short',
-        //   ttl: 1000,
-        //   limit: parseInt(process.env.RATE_LIMIT_SHORT || '10'),
-        // },
         {
           name: 'medium',
           ttl: 10000,
           limit: parseInt(process.env.RATE_LIMIT_MEDIUM || '50'),
         },
-        // {
-        //   name: 'long',
-        //   ttl: 60000,
-        //   limit: parseInt(process.env.RATE_LIMIT_LONG || '100'),
-        // },
       ],
     }),
   ],
-  controllers: [AppController, AuthController,UploadImages],
+  controllers: [AppController, AuthController, UploadImages],
   providers: [
     AppService,
     {
@@ -87,7 +82,6 @@ configDotenv();
       useClass: CustomThrottlerGuard,
     },
   ],
-
   exports: [],
 })
 export class ApiGatewayModule {}

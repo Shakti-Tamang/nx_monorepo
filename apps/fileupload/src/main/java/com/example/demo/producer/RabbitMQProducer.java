@@ -14,13 +14,23 @@ public class RabbitMQProducer {
         this.rabbitTemplate = rabbitTemplate;
     }
 
-    public void sendMessage(Object message) {
+    // Send Upload Message
+    public void sendUploadMessage(Object message) {
         rabbitTemplate.convertAndSend(
                 RabbitMqConfig.EXCHANGE_NAME,
-                RabbitMqConfig.ROUTING_KEY,
+                RabbitMqConfig.UPLOAD_ROUTING_KEY,
                 message
         );
-        System.out.println("Sent message: " + message);
+        System.out.println("Sent upload message: " + message);
+    }
+
+    // Send Existence Check Message
+    public void sendExistenceMessage(Object message) {
+        rabbitTemplate.convertAndSend(
+                RabbitMqConfig.EXCHANGE_NAME,
+                RabbitMqConfig.EXIST_ROUTING_KEY,
+                message
+        );
+        System.out.println("Sent existence check message: " + message);
     }
 }
-
