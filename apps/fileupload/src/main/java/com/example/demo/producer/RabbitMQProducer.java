@@ -33,4 +33,13 @@ public class RabbitMQProducer {
         );
         System.out.println("Sent existence check message: " + message);
     }
+
+        public void sendfetchImageMessage(Object message) {
+        rabbitTemplate.convertAndSend(
+                RabbitMqConfig.EXCHANGE_NAME,
+                RabbitMqConfig.FETCH_ROUTING_KEY,
+                message
+        );
+        System.out.println("Sent fetch image message: " + message);
+    }
 }

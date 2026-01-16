@@ -11,6 +11,8 @@ import java.util.List;
 @AllArgsConstructor
 public class GetImagesRequest {
 
+
+    // close loop system
     @JsonProperty("imageIds")
     private List<Long> imageIds;
 }

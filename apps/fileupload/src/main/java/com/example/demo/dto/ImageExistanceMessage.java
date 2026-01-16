@@ -12,5 +12,5 @@ import java.util.List;
 public class ImageExistanceMessage {
     
     @JsonProperty("imageIds")
-    private List<Long> imageId;
+    private List<Long> imageIds;
 }
