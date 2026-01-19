@@ -3,7 +3,7 @@ import { ProductDto } from './dto/product.dto';
 import { ProductEntity } from './entity/product.entity';
 import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
-import { UPLOAD_SERVICE_RABBITMQ } from './utils/servicename';
+import { IMAGE_FETCH_SERVICE_RABBITMQ, UPLOAD_SERVICE_RABBITMQ } from './utils/servicename';
 import { ClientProxy } from '@nestjs/microservices';
 import { lastValueFrom } from 'rxjs';
 
@@ -14,6 +14,8 @@ export class AppService {
     private readonly productRepository: Repository<ProductEntity>,
 
     @Inject(UPLOAD_SERVICE_RABBITMQ) private upload_client: ClientProxy,
+
+        @Inject(IMAGE_FETCH_SERVICE_RABBITMQ) private fetch_client: ClientProxy
   ) {}
 
   async savePeoduct(dto: ProductDto) {
@@ -33,22 +35,25 @@ export class AppService {
   }
 
   async getAllProducts() {
-    const allProducts= await this.productRepository.find();
 
-    const productsWithImages= await Promise.all(
-      allProducts.map(async (product) => {
+    const products = await this.productRepository.find();
+
+    return Promise.all(
+      products.map(async (product) => {
+
         const imageResult = await lastValueFrom(
-          this.upload_client.send('image.fetch', JSON.stringify({ imageIds: product.imageIds }))
+          this.fetch_client.send(
+            'image.fetch',
+            { imageIds: product.imageIds }
+          )
         );
-        
+
         return {
           ...product,
           images: imageResult.images,
+          imageCount: imageResult.count,
         };
-      }
+      })
     );
-    
-    return productsWithImages;
-    
   }
 }

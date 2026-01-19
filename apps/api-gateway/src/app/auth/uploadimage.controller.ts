@@ -5,6 +5,7 @@ import {
   UploadedFile,
   UseInterceptors,
   BadRequestException,
+  Get,
 } from '@nestjs/common';
 import { ApiBody, ApiConsumes, ApiTags } from '@nestjs/swagger';
 import { FileInterceptor } from '@nestjs/platform-express';
@@ -45,5 +46,10 @@ export class UploadImages {
     }
 
     return this.appServices.uploadImage(file, type);
+  }
+
+  @Get()
+  async getAll() {
+    return this.appServices.getAllProductsWithImage();
   }
 }

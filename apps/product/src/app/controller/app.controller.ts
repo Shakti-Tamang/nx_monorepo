@@ -14,4 +14,10 @@ export class AppController {
     return this.appService.savePeoduct(data);
 
   }
+
+  @MessagePattern('getProduct')
+  async getAllProducts(){
+
+    return this.appService.getAllProducts();
+  }
 }

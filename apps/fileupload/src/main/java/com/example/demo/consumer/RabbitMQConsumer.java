@@ -3,6 +3,8 @@ package com.example.demo.consumer;
 import com.example.demo.config.RabbitMqConfig;
 import com.example.demo.dto.ImageExistResponse;
 import com.example.demo.dto.ImageExistanceMessage;
+import com.example.demo.dto.ImageFetchMessage;
+import com.example.demo.dto.ImageFetchResponse;
 import com.example.demo.dto.UploadedMessage;
 import com.example.demo.enums.ImageType;
 import com.example.demo.model.Image;
@@ -114,4 +116,18 @@ public class RabbitMQConsumer {
             return new ImageExistResponse(false);
         }
     }
-}
+
+
+      // NEW: Fetch Images Handler
+     @RabbitListener(queues = RabbitMqConfig.FETCH_QUEUE)
+    public ImageFetchResponse fetchImages(ImageFetchMessage message) {
+
+        List<Image> images = saveImage.findImageByIds(message.getData().getImageIds());
+
+        return new ImageFetchResponse(
+                images,
+                images.size(),
+                true
+        );
+    }
+    }
