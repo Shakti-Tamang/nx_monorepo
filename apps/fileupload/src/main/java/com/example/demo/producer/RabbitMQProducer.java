@@ -1,11 +1,16 @@
 package com.example.demo.producer;
 
+import java.util.logging.Logger;
+
 import org.springframework.stereotype.Service;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 
 import com.example.demo.config.RabbitMqConfig;
 
+import lombok.extern.slf4j.Slf4j;
+
 @Service
+@Slf4j
 public class RabbitMQProducer {
 
     private final RabbitTemplate rabbitTemplate;
@@ -34,12 +39,12 @@ public class RabbitMQProducer {
         System.out.println("Sent existence check message: " + message);
     }
 
-        public void sendfetchImageMessage(Object message) {
+          public void sendFetchImageMessage(Object message) {
         rabbitTemplate.convertAndSend(
                 RabbitMqConfig.EXCHANGE_NAME,
                 RabbitMqConfig.FETCH_ROUTING_KEY,
                 message
         );
-        System.out.println("Sent fetch image message: " + message);
+        log.info(" Sent fetch image message");
     }
 }

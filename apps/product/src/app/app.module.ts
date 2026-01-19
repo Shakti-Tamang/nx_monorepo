@@ -5,6 +5,7 @@ import ormConfig from './config/orm.config';
 import ormConfigProd from './config/orm.config.prod';
 import { TypeOrmModule, TypeOrmModuleOptions } from '@nestjs/typeorm';
 import {
+  IMAGE_FETCH_SERVICE_RABBITMQ,
   PRODUCT_SERVICE_RABBITMQ,
   UPLOAD_SERVICE_RABBITMQ,
 } from './utils/servicename';
@@ -29,7 +30,20 @@ import { join } from 'node:path';
           queueOptions: { durable: true },
         },
       },
+
+      {
+        name: IMAGE_FETCH_SERVICE_RABBITMQ,
+        transport: Transport.RMQ,
+        options: {
+          urls: ['amqp://guest:guest@localhost:5672'],
+          queue: 'image.fetch.queue',
+          exchange: 'upload_Exchange',
+          routingKey: 'image.fetch',
+          queueOptions: { durable: true },
+        },
+      },
     ]),
+
     ConfigModule.forRoot({
       envFilePath: '.env',
       isGlobal: true,

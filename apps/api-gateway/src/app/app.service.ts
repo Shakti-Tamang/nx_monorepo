@@ -59,4 +59,10 @@ export class AppService {
   async saveProduct(dto: ProductDto) {
     return await lastValueFrom(this.product_client.send('save-product', dto));
   }
+
+  async getAllProductsWithImage() {
+    return await lastValueFrom(
+      this.product_client.send('getProduct', {}), 
+    );
+  }
 }
