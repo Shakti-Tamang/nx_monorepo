@@ -11,7 +11,9 @@ import com.example.demo.model.Image;
 import com.example.demo.service.SaveImage;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+
 import lombok.RequiredArgsConstructor;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.amqp.core.Message;
@@ -19,6 +21,7 @@ import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.stereotype.Component;
 
 import java.util.Base64;
+import java.util.Collections;
 import java.util.List;
 
 @Component
@@ -117,17 +120,42 @@ public class RabbitMQConsumer {
         }
     }
 
+    // NEW: Fetch Images Handler
+    @RabbitListener(queues = RabbitMqConfig.FETCH_QUEUE)
+    public ImageFetchResponse fetchImages(Message rawMessage) {
+        try {
+            // Convert message bytes to String
+            String jsonString = new String(rawMessage.getBody());
+            log.info("Raw fetch message: {}", jsonString);
 
-      // NEW: Fetch Images Handler
-     @RabbitListener(queues = RabbitMqConfig.FETCH_QUEUE)
-    public ImageFetchResponse fetchImages(ImageFetchMessage message) {
+            // Parse JSON
+            JsonNode rootNode = objectMapper.readTree(jsonString);
+            String actualData;
 
-        List<Image> images = saveImage.findImageByIds(message.getData().getImageIds());
+            // Handle NestJS RPC wrapper: {"pattern":"image.fetch","data":{...}}
+            if (rootNode.has("pattern") && rootNode.has("data")) {
+                actualData = rootNode.get("data").toString(); // keep JSON structure intact
+                log.info("Unwrapped NestJS message: {}", actualData);
+            } else {
+                actualData = jsonString;
+            }
 
-        return new ImageFetchResponse(
-                images,
-                images.size(),
-                true
-        );
+            // Deserialize to DTO
+            ImageFetchMessage message = objectMapper.readValue(actualData, ImageFetchMessage.class);
+            List<Long> imageIds = message.getData().getImageIds();
+            log.info("Fetching images with IDs: {}", imageIds);
+
+            // Fetch images from DB or storage
+            List<Image> images = saveImage.findImageByIds(imageIds);
+
+            log.info("Fetched {} images", images.size());
+
+            return new ImageFetchResponse(images, images.size(), true);
+
+        } catch (Exception e) {
+            log.error("Image fetch failed: {}", e.getMessage(), e);
+            // Return empty result in case of failure
+            return new ImageFetchResponse(Collections.emptyList(), 0, false);
+        }
     }
-    }
+}

@@ -48,8 +48,5 @@ export class UploadImages {
     return this.appServices.uploadImage(file, type);
   }
 
-  @Get()
-  async getAll() {
-    return this.appServices.getAllProductsWithImage();
-  }
+
 }
