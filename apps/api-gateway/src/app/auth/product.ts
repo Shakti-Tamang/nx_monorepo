@@ -5,17 +5,16 @@ import { ApiTags } from '@nestjs/swagger';
 
 @Controller('product')
 @ApiTags('product')
-export class ProductController{
+export class ProductController {
+  constructor(private readonly appServices: AppService) {}
 
-    constructor(
-        private readonly appServices: AppService
-    ) {}
+  @Post()
+  async saveProduct(@Body() dto: ProductDto) {
+    return this.appServices.saveProduct(dto);
+  }
 
-    @Post()
-    async saveProduct(@Body() dto:ProductDto){
-
-        return this.appServices.saveProduct(dto);
-    }
-
-    
+  @Get()
+  async getAll() {
+    return this.appServices.getAllProductsWithImage();
+  }
 }
